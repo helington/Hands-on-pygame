@@ -7,6 +7,7 @@ from src.obstacle import Obstacle
 from src.constants import (
     GRAPHICS_DIR,
     GRAPHICS_PLAYER_DIR,
+    AUDIO_DIR,
     FONT_DIR,
     HEIGHT_SCREEN,
     WIDTH_SCREEN,
@@ -66,6 +67,12 @@ class Game:
         self.player = pygame.sprite.GroupSingle()
         self.player.add(Player(self.joystick))
         self.obstacle_group = pygame.sprite.Group()
+
+        # Set backgroung music
+        backgroung_music_path = path.join(AUDIO_DIR, 'music.wav')
+        self.background_music = pygame.mixer.Sound(backgroung_music_path)
+        self.background_music.set_volume(0.5)
+        self.background_music.play()
 
     def display_score(self, start_time, font):
         self.score = int(pygame.time.get_ticks() / 1000) - start_time

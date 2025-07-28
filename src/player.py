@@ -2,7 +2,7 @@ import pygame
 from os import path
 
 from src.constants import (
-    GRAPHICS_PLAYER_DIR
+    GRAPHICS_PLAYER_DIR, AUDIO_DIR
 )
 
 class Player(pygame.sprite.Sprite):
@@ -25,6 +25,10 @@ class Player(pygame.sprite.Sprite):
         self.joystick = joystick
         self.is_jumping = False
 
+        jump_soung_path = path.join(AUDIO_DIR, 'jump.mp3')
+        self.jump_sound = pygame.mixer.Sound(jump_soung_path)
+        self.jump_sound.set_volume(0.5)
+
     def player_input(self):
         if self.rect.bottom >= 300 and not self.is_jumping:
             keys = pygame.key.get_pressed()
@@ -40,6 +44,7 @@ class Player(pygame.sprite.Sprite):
             if jump_input:
                 self.gravity = -20
                 self.is_jumping = True
+                self.jump_sound.play()
 
     def animation_state(self):
         if self.rect.bottom < 300:
