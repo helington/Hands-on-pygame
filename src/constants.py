@@ -12,9 +12,15 @@ FPS = 60
 ROOT_DIR = Path(__file__).resolve().parents[1]
 GRAPHICS_DIR = path.join(ROOT_DIR, 'graphics')
 GRAPHICS_SNAIL_DIR = path.join(GRAPHICS_DIR, 'snail')
+GRAPHICS_FLY_DIR = path.join(GRAPHICS_DIR, 'Fly')
 GRAPHICS_PLAYER_DIR = path.join(GRAPHICS_DIR, 'player')
 AUDIO_DIR = path.join(ROOT_DIR, 'audio')
 FONT_DIR = path.join(ROOT_DIR, 'font')
 
 # Font settings
 FONT_SIZE = 50
+
+# Colors
+DARKISH_GRAY = (64, 64, 64)
+DARKISH_CYAN = (94, 129, 162)
+LIGHT_CYAN = (111, 196, 169)
