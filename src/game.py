@@ -1,26 +1,28 @@
-import pygame
 from os import path
 from random import choice
 
-from src.player import Player
-from src.obstacle import Obstacle
+import pygame
+
 from src.constants import (
+    AUDIO_DIR,
+    DARKISH_CYAN,
+    DARKISH_GRAY,
+    FONT_DIR,
+    FONT_SIZE,
+    FPS,
     GRAPHICS_DIR,
     GRAPHICS_PLAYER_DIR,
-    AUDIO_DIR,
-    FONT_DIR,
     HEIGHT_SCREEN,
+    LIGHT_CYAN,
+    START_VIDEO_GAME_BUTTON,
     WIDTH_SCREEN,
-    FPS,
-    FONT_SIZE,
-    DARKISH_GRAY,
-    DARKISH_CYAN,
-    LIGHT_CYAN
 )
+from src.obstacle import Obstacle
+from src.player import Player
+
 
 class Game:
     def __init__(self):
-
         # Set up pygame
         pygame.init()
         pygame.display.set_caption('Runner')
@@ -42,21 +44,33 @@ class Game:
         self.ground = pygame.image.load(ground_path).convert()
 
         # Set up intro screen
-        player_stantard_path = path.join(GRAPHICS_PLAYER_DIR, 'player_stand.png')
-        self.player_standard = pygame.image.load(player_stantard_path).convert_alpha()
-        self.player_standard = pygame.transform.rotozoom(self.player_standard, 0, 2)
-        self.player_standard_rectangle = self.player_standard.get_rect(center = (400, 200))
+        player_stantard_path = path.join(
+            GRAPHICS_PLAYER_DIR, 'player_stand.png'
+        )
+        self.player_standard = pygame.image.load(
+            player_stantard_path
+        ).convert_alpha()
+        self.player_standard = pygame.transform.rotozoom(
+            self.player_standard, 0, 2
+        )
+        self.player_standard_rectangle = self.player_standard.get_rect(
+            center=(400, 200)
+        )
 
         button = 'enter' if self.joystick is None else 'start'
-        self.game_message = self.font.render(f'Press {button} to run', False, LIGHT_CYAN)
-        self.game_message_rectangle = self.game_message.get_rect(center = (400, 340))
+        self.game_message = self.font.render(
+            f'Press {button} to run', False, LIGHT_CYAN
+        )
+        self.game_message_rectangle = self.game_message.get_rect(
+            center=(400, 340)
+        )
 
         self.game_name = self.font.render('Pixel Runner', False, LIGHT_CYAN)
-        self.game_name_rectangle = self.game_name.get_rect(center = (400, 80))
+        self.game_name_rectangle = self.game_name.get_rect(center=(400, 80))
 
         # Set up Timer
         self.obstacle_timer = pygame.USEREVENT + 1
-        pygame.time.set_timer(self.obstacle_timer,1500)
+        pygame.time.set_timer(self.obstacle_timer, 1500)
 
         # Set up atributes
         self.game_active = False
@@ -76,18 +90,22 @@ class Game:
 
     def display_score(self, start_time, font):
         self.score = int(pygame.time.get_ticks() / 1000) - start_time
-        score_surface = font.render(f'Score: {self.score}', False, DARKISH_GRAY)
+        score_surface = font.render(
+            f'Score: {self.score}', False, DARKISH_GRAY
+        )
         score_rectangle = score_surface.get_rect(center=(400, 50))
         self.screen.blit(score_surface, score_rectangle)
 
     def collision_sprite(self):
-        if pygame.sprite.spritecollide(self.player.sprite, self.obstacle_group, False):
+        if pygame.sprite.spritecollide(
+            self.player.sprite, self.obstacle_group, False
+        ):
             self.obstacle_group.empty()
             self.game_active = False
-        else: self.game_active = True
+        else:
+            self.game_active = True
 
     def run(self):
-
         # Game loop
         running = True
         while running:
@@ -97,16 +115,22 @@ class Game:
 
                 if self.game_active:
                     if event.type == self.obstacle_timer:
-                        self.obstacle_group.add(Obstacle(choice(['fly', 'snail', 'snail', 'snail'])))
-                else:
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                        self.obstacle_group.add(
+                            Obstacle(
+                                choice(['fly', 'snail', 'snail', 'snail'])
+                            )
+                        )
+                elif (
+                    event.type == pygame.KEYDOWN
+                    and event.key == pygame.K_RETURN
+                ):
+                    self.game_active = True
+                    self.start_time = int(pygame.time.get_ticks() / 1000)
+
+                elif event.type == pygame.JOYBUTTONDOWN:
+                    if event.button == START_VIDEO_GAME_BUTTON:
                         self.game_active = True
                         self.start_time = int(pygame.time.get_ticks() / 1000)
-
-                    elif event.type == pygame.JOYBUTTONDOWN:
-                        if event.button == 6:
-                            self.game_active = True
-                            self.start_time = int(pygame.time.get_ticks() / 1000)
 
             if self.game_active:
                 self.screen.blit(self.sky, (0, 0))
@@ -126,15 +150,25 @@ class Game:
                 self.screen.fill(DARKISH_CYAN)
                 self.screen.blit(self.game_name, self.game_name_rectangle)
 
-                score_message = self.font.render(f'Your score: {self.score}', False, LIGHT_CYAN)
-                score_message_rectangle = score_message.get_rect(center = (400, 330))
+                score_message = self.font.render(
+                    f'Your score: {self.score}', False, LIGHT_CYAN
+                )
+                score_message_rectangle = score_message.get_rect(
+                    center=(400, 330)
+                )
 
-                self.screen.blit(self.player_standard, self.player_standard_rectangle)
+                self.screen.blit(
+                    self.player_standard, self.player_standard_rectangle
+                )
 
                 if self.score != 0:
                     self.screen.blit(score_message, score_message_rectangle)
-                    self.game_message_rectangle = self.game_message.get_rect(center = (400, 370))
-                self.screen.blit(self.game_message, self.game_message_rectangle)
+                    self.game_message_rectangle = self.game_message.get_rect(
+                        center=(400, 370)
+                    )
+                self.screen.blit(
+                    self.game_message, self.game_message_rectangle
+                )
 
             # Update display
             pygame.display.update()

@@ -1,11 +1,11 @@
-from pathlib import Path
 from os import path
+from pathlib import Path
 
 # Dimensions of the screen
 HEIGHT_SCREEN = 400
 WIDTH_SCREEN = 800
 
-# Ceil frame rate 
+# Ceil frame rate
 FPS = 60
 
 # Paths
@@ -24,3 +24,10 @@ FONT_SIZE = 50
 DARKISH_GRAY = (64, 64, 64)
 DARKISH_CYAN = (94, 129, 162)
 LIGHT_CYAN = (111, 196, 169)
+
+# Positions
+FLOOR_Y = 300
+EXCEEDED_OBSTSCLE_X = -100
+
+# Button videogame
+START_VIDEO_GAME_BUTTON = 6

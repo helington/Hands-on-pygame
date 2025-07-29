@@ -6,7 +6,7 @@ authors = [
     {name = "Your Name",email = "you@example.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.13,<4.0"
 dependencies = [
     "pygame (>=2.6.1,<3.0.0)"
 ]
@@ -14,6 +14,27 @@ dependencies = [
 [tool.poetry]
 packages = [{include = "ultimatepygameintro", from = "src"}]
 
+[tool.poetry.group.dev.dependencies]
+taskipy = "^1.14.1"
+ruff = "^0.12.5"
+
+[tool.ruff]
+line-length = 79
+extend-exclude = ['migrations']
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.taskipy.tasks]
+lint = 'ruff check'
+pre_format = 'ruff check --fix'
+format = 'ruff format'
+run = 'python3 main.py'
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
